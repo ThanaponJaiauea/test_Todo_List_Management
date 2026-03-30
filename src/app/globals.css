@@ -116,3 +116,7 @@ body {
 .label_input {
   @apply block text-xs font-medium text-zinc-400 mb-1.5;
 }
+
+.Toastify__toast-container {
+  z-index: 99999 !important;
+}

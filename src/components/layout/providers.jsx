@@ -41,6 +41,8 @@ export function Providers({ children }) {
         theme="light"
         position="bottom-center"
         transition={Slide}
+        stacked
+        limit={3}
       />
 
       {pathname === "/auth" ? (
