@@ -50,12 +50,12 @@ export default function ProfilePage() {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-zinc-800">
-            <button
+            {/* <button
               onClick={() => router.push("/profile/edit")}
               className="flex-1 bg-violet-600 hover:bg-violet-500 text-white text-sm font-semibold py-2.5 rounded-xl transition"
             >
               Edit Profile
-            </button>
+            </button> */}
 
             <button
               onClick={logout}
