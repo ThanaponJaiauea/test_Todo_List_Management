@@ -31,15 +31,17 @@ export default function AuthPage() {
   const [mode, setMode] = useState("login");
   const [error, setError] = useState({});
 
+  const [isLoading, setIsLoading] = useState(false);
+
   // handle input (optimize)
-  const handleChangeInput = (e) => {
+  const handleChangeInput = e => {
     const { name, value } = e.target;
-    setInput((prev) => ({ ...prev, [name]: value }));
+    setInput(prev => ({ ...prev, [name]: value }));
   };
 
   // toggle mode (clean)
   const handleToggleMode = () => {
-    setMode((prev) => (prev === "login" ? "register" : "login"));
+    setMode(prev => (prev === "login" ? "register" : "login"));
     setInput(INITIAL_INPUT);
     setError({});
   };
@@ -79,17 +81,22 @@ export default function AuthPage() {
 
     setError({});
 
+    setIsLoading(true);
+
     try {
       await login(input.email, input.password);
       toast.success("Login successful");
       router.push("/home");
     } catch (err) {
       toast.error(err.message || "Login failed");
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // submit
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     mode === "login" ? handleLogin() : handleRegister();
   };
@@ -122,9 +129,38 @@ export default function AuthPage() {
 
             <button
               type="submit"
-              className="w-full bg-violet-600 hover:bg-violet-500 text-white font-semibold py-2.5 rounded-xl text-sm transition"
+              disabled={isLoading}
+              className="w-full bg-violet-600 hover:bg-violet-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2"
             >
-              {mode === "login" ? "Sign in" : "Create account"}
+              {isLoading && mode === "login" ? (
+                <>
+                  <svg
+                    className="animate-spin h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v8H4z"
+                    />
+                  </svg>
+                  Logging in ...
+                </>
+              ) : mode === "login" ? (
+                "Sign in"
+              ) : (
+                "Create account"
+              )}
             </button>
           </form>
         </AuthCard>
